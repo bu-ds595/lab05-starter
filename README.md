@@ -60,6 +60,8 @@ The notebook walks through each step. The self-check cell at the end replicates 
 pytest test_diffusion.py -v
 ```
 
+> **Note:** The first two tests check your schedule and training loop and will pass without a trained model. The last two (`test_sample_quality`, `test_sample_centered`) load `model_params.pkl`, so you need to complete the full notebook and save your trained model before the entire test suite will pass.
+
 ## Submitting Your Work
 
 After training, save your notebook, diffusion.py file, and model, then commit and push:
