@@ -1,13 +1,13 @@
 # Lab 5: Galaxy Image Generation with Diffusion Models
 
-Build a denoising diffusion probabilistic model (DDPM) to generate galaxy images from scratch. Given 32x32 grayscale images from the Galaxy Zoo survey, your model learns to iteratively denoise — transforming pure Gaussian noise into realistic galaxy images.
+Build a denoising diffusion probabilistic model (DDPM) to generate galaxy images from scratch, using 32x32 grayscale images from the Galaxy Zoo survey.
 
 ## Learning Objectives
 
 - Implement the forward diffusion process and understand the closed-form noising kernel
 - Build a time-conditioned noise predictor network $\epsilon_\theta(z_t, t)$
 - Understand why the denoising loss reduces to simple MSE on noise
-- Think carefully about spatial inductive biases for structured image generation
+- Think carefully about spatial inductive biases for the network architecture
 
 ## Getting Started
 
@@ -30,20 +30,14 @@ pip install -r requirements.txt
 
 ### 4. Open the notebook
 
-**Option A: Google Colab (recommended — training is faster on GPU)**
+**Option A: Google Colab (recommended, this lab benefits a lot from GPU acceleration!)**
 
 1. Go to [colab.research.google.com](https://colab.research.google.com/) and upload your notebook: **File → Upload notebook**, then select `lab-05-diffusion.ipynb`.
 2. Enable GPU: **Runtime → Change runtime type → T4 GPU** (or L4 if available), then click Save.
 3. Upload the data and module files using the **Files pane** on the left sidebar (folder icon): drag and drop `galaxy_data.npz` and `diffusion.py` there, or use the upload button at the top of the pane.
-4. Add a cell at the top of the notebook and run:
+4. After training, download `model_params.pkl` from the Files pane (right-click → Download) and save it to your local repo before committing. Also save your notebook (File → Save) and the `diffusion.py` file to your local repo which you will commit and push to complete the assignment.
 
-```python
-!pip install jax jaxlib flax optax
-```
-
-5. After training, download `model_params.pkl` from the Files pane (right-click → Download) and save it to your local repo before committing.
-
-**Option B: VS Code / JupyterLab**
+**Option B: VS Code / JupyterLab (not recommended, training will be very slow)**
 
 ```bash
 jupyter lab
@@ -54,11 +48,11 @@ jupyter lab
 Complete the `TODO` sections in `diffusion.py`:
 
 1. **`linear_noise_schedule`** — Compute betas, alphas, and cumulative alpha_bars from a linear schedule.
-2. **`q_sample`** — Implement the closed-form forward process: $z_t = \sqrt{\bar\alpha_t}\,x + \sqrt{1-\bar\alpha_t}\,\epsilon$.
+2. **`q_sample`** — Implement the closed-form forward process (diffusion kernel): $z_t = \sqrt{\bar\alpha_t}\,x + \sqrt{1-\bar\alpha_t}\,\epsilon$.
 3. **`EpsNet`** — Build a time-conditioned network that predicts the noise $\epsilon$ added at each timestep. Think carefully about the spatial structure of the problem.
 4. **`compute_loss`** — Implement the denoising objective: sample $t$ and $\epsilon$, compute $z_t$, predict noise, return MSE.
 
-The notebook walks through each step with visualizations. The self-check cell at the end replicates the autograder.
+The notebook walks through each step. The self-check cell at the end replicates the autograder.
 
 ## Running Tests Locally
 
@@ -68,7 +62,7 @@ pytest test_diffusion.py -v
 
 ## Submitting Your Work
 
-After training, save your notebook and model, then commit and push:
+After training, save your notebook, diffusion.py file, and model, then commit and push:
 
 ```bash
 git add lab-05-diffusion.ipynb diffusion.py model_params.pkl
